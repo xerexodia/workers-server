@@ -1,0 +1,126 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"IClient": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "workers-server",
+		"version": "1.0.0",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {
+			"name": "xerexodia ",
+			"email": "ibrahimfarhat2018@gmail.com"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/clients/{id}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IClient"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/clients": {
+			"post": {
+				"operationId": "CreateClient",
+				"responses": {
+					"201": {
+						"description": "Bienvenue",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IClient"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"nom": {
+										"type": "string"
+									},
+									"prenom": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									},
+									"adresse": {
+										"type": "string"
+									},
+									"photo": {
+										"type": "string",
+										"format": "binary"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

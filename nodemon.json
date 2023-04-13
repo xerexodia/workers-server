@@ -1,4 +1,6 @@
 {
+  "restartable": "rs",
+  "ignore": [".git", ".vs", "logs", "node_modules", "build", "coverage", "src/Services/router", "src/Services/swagger"],
   "exec": "ts-node src/server.ts",
   "watch": ["src"],
   "ext": "ts"

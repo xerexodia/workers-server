@@ -1,13 +1,8 @@
 // src/app.ts
-import express, {
-  json,
-  urlencoded,
-  Response as ExResponse,
-  Request as ExRequest,
-} from "express";
-import swaggerUi from "swagger-ui-express";
+import express, { json, urlencoded, Response as ExResponse, Request as ExRequest } from 'express';
+import swaggerUi from 'swagger-ui-express';
 
-import { RegisterRoutes } from "../build/routes";
+import { RegisterRoutes } from './Services/router/routes';
 
 export const app = express();
 
@@ -15,13 +10,16 @@ export const app = express();
 app.use(
   urlencoded({
     extended: true,
-  })
+  }),
 );
-app.use("/docs", swaggerUi.serve, async (_req: ExRequest, res: ExResponse) => {
-  return res.send(
-    swaggerUi.generateHTML(await import("../build/swagger.json"))
-  );
+
+app.use('/src/uploads', express.static(__dirname + '/uploads'));
+console.log(__dirname + 'uploads');
+
+app.use('/docs', swaggerUi.serve, async (req: ExRequest, res: ExResponse) => {
+  return res.send(swaggerUi.generateHTML(await require('./Services/swagger/swagger.json')));
 });
+
 app.use(json());
 
 RegisterRoutes(app);

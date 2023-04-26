@@ -10,8 +10,65 @@
 				"properties": {},
 				"type": "object"
 			},
+			"IWorker": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
 			"IClient": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"Pick_IWorker.email-or-password_": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Payload": {
+				"$ref": "#/components/schemas/Pick_IWorker.email-or-password_"
+			},
+			"IPost": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"updatedAt": {
+						"type": "string"
+					},
+					"clientId": {
+						"type": "string"
+					},
+					"adresse": {
+						"type": "string"
+					},
+					"photo": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"reserved",
+							"completed"
+						]
+					}
+				},
+				"required": [
+					"createdAt",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -29,54 +86,44 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/clients/{id}": {
-			"get": {
-				"operationId": "GetUser",
+		"/login": {
+			"post": {
+				"operationId": "LoginUser",
 				"responses": {
-					"200": {
-						"description": "Ok",
+					"201": {
+						"description": "Welcome back",
 						"content": {
 							"application/json": {
 								"schema": {
-									"allOf": [
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/IWorker"
+										},
 										{
 											"$ref": "#/components/schemas/IClient"
+										},
+										{
+											"type": "string"
 										}
-									],
-									"nullable": true
+									]
 								}
 							}
 						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/clients": {
-			"post": {
-				"operationId": "CreateClient",
-				"responses": {
-					"201": {
-						"description": "Bienvenue",
+					},
+					"404": {
+						"description": "",
 						"content": {
 							"application/json": {
 								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/IClient"
+									"properties": {
+										"msg": {
+											"type": "string"
 										}
+									},
+									"required": [
+										"msg"
 									],
-									"nullable": true
+									"type": "object"
 								}
 							}
 						}
@@ -85,7 +132,61 @@
 				"security": [],
 				"parameters": [],
 				"requestBody": {
-					"required": false,
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Payload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/register/clients": {
+			"post": {
+				"operationId": "CreateClient",
+				"responses": {
+					"201": {
+						"description": "Bienvenue",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/IClient"
+										},
+										{
+											"type": "string"
+										}
+									]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"msg": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"msg"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
 					"content": {
 						"multipart/form-data": {
 							"schema": {
@@ -110,11 +211,291 @@
 										"type": "string",
 										"format": "binary"
 									}
+								},
+								"required": [
+									"nom",
+									"prenom",
+									"email",
+									"password",
+									"adresse",
+									"photo"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"/register/workers": {
+			"post": {
+				"operationId": "CreateWorker",
+				"responses": {
+					"201": {
+						"description": "Bienvenue",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IWorker"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"msg": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"msg"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"nom": {
+										"type": "string"
+									},
+									"prenom": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									},
+									"adresse": {
+										"type": "string"
+									},
+									"profession": {
+										"type": "string"
+									},
+									"avis": {
+										"type": "string"
+									},
+									"experience": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"photo": {
+										"type": "string",
+										"format": "binary"
+									}
+								},
+								"required": [
+									"nom",
+									"prenom",
+									"email",
+									"password",
+									"adresse",
+									"profession",
+									"avis",
+									"experience",
+									"description",
+									"photo"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"/post": {
+			"post": {
+				"operationId": "CreatePost",
+				"responses": {
+					"201": {
+						"description": "created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPost"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string"
+									},
+									"adresse": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"clientId": {
+										"type": "string"
+									},
+									"photo": {
+										"type": "string",
+										"format": "binary"
+									}
+								},
+								"required": [
+									"title",
+									"adresse",
+									"description",
+									"clientId",
+									"photo"
+								]
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetPosts",
+				"responses": {
+					"201": {
+						"description": "fetched successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IPost"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/post/{postId}": {
+			"get": {
+				"operationId": "GetPostById",
+				"responses": {
+					"201": {
+						"description": "fetched successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPost"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdatePost",
+				"responses": {
+					"201": {
+						"description": "updated successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPost"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string"
+									},
+									"adresse": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"clientId": {
+										"type": "string"
+									},
+									"photo": {
+										"type": "string",
+										"format": "binary"
+									}
 								}
 							}
 						}
 					}
 				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"201": {
+						"description": "deleted successfully"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

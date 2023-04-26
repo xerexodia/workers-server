@@ -1,6 +1,20 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-const clientSchema: Schema = new mongoose.Schema({
+export interface IWorker extends mongoose.Document {
+  nom?: string;
+  prenom?: string;
+  email?: string;
+  password?: string;
+  adresse?: string;
+  photo?: string;
+  role?: string;
+  profession?: string;
+  description?: string;
+  experience?: string;
+  avis?: number;
+}
+
+const workerSchema = new mongoose.Schema<IWorker>({
   nom: {
     type: String,
   },
@@ -25,11 +39,11 @@ const clientSchema: Schema = new mongoose.Schema({
   description: {
     type: String,
   },
-  experience: {
-    type: String,
-  },
   avis: {
     type: Number,
+  },
+  experience: {
+    type: String,
   },
   role: {
     type: String,
@@ -37,4 +51,5 @@ const clientSchema: Schema = new mongoose.Schema({
   },
 });
 
-exports.Worker = mongoose.model('Client', clientSchema);
+const Worker = mongoose.model<IWorker>('Worker', workerSchema);
+export default Worker;

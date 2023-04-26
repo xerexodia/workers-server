@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import Client, { IClient } from '../Models/client';
 // A post request should not contain an id.
 
@@ -14,5 +15,12 @@ export class ClientsService {
       ...payload,
     };
     return await new Client(client).save();
+  }
+  public async findClient(email: string): Promise<IClient | undefined> {
+    const client = await Client.findOne({ email });
+    if (client) {
+      return client!;
+    }
+    return;
   }
 }

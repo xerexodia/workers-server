@@ -69,6 +69,9 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"IResPost": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
 			}
 		},
 		"securitySchemes": {}
@@ -395,6 +398,58 @@
 				},
 				"security": [],
 				"parameters": []
+			},
+			"patch": {
+				"operationId": "Reserve",
+				"responses": {
+					"201": {
+						"description": "deleted successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IResPost"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"msg": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"msg"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "workerId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/post/{postId}": {

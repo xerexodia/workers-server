@@ -6,6 +6,7 @@ import {
   Patch,
   Path,
   Post,
+  Query,
   Request,
   Res,
   Route,
@@ -20,6 +21,7 @@ import { IWorker } from '../../Models/worker';
 import { WorkersServices } from '../../Services/workerServices';
 import { IPost } from '../../Models/post';
 import { PostServices } from '../../Services/postServices';
+import { IResPost } from '../../Models/reservedPost';
 
 // post controller
 @Route('post')
@@ -97,5 +99,19 @@ export class PostController extends Controller {
   @Delete('{postId}')
   public async delete(@Path() postId: string): Promise<void> {
     await new PostServices().delete(postId);
+  }
+  @SuccessResponse('201', 'deleted successfully') // Custom success response
+  @Patch()
+  public async reserve(
+    @Query() postId: string,
+    @Query() workerId: string,
+    @Res() reservedPost: TsoaResponse<401, { msg: string }>,
+  ): Promise<IResPost> {
+    const post = await new PostServices().getById(postId);
+    if (post?.status === 'reserved' || post?.status === 'completed') {
+      return reservedPost(401, { msg: 'reserved task' });
+    }
+    const resPost = await new PostServices().reservePost(postId, workerId);
+    return resPost!;
   }
 }

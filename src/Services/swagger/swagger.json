@@ -31,6 +31,36 @@
 			"Payload": {
 				"$ref": "#/components/schemas/Pick_IWorker.email-or-password_"
 			},
+			"IMaterialPost": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"updatedAt": {
+						"type": "string"
+					},
+					"workerId": {
+						"type": "string"
+					},
+					"adresse": {
+						"type": "string"
+					},
+					"photo": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IPost": {
 				"properties": {
 					"title": {
@@ -324,6 +354,181 @@
 						}
 					}
 				}
+			}
+		},
+		"/materialpost": {
+			"post": {
+				"operationId": "CreatePost",
+				"responses": {
+					"201": {
+						"description": "created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IMaterialPost"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string"
+									},
+									"adresse": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"workerId": {
+										"type": "string"
+									},
+									"photo": {
+										"type": "string",
+										"format": "binary"
+									}
+								},
+								"required": [
+									"title",
+									"adresse",
+									"description",
+									"workerId",
+									"photo"
+								]
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "Getmaterialposts",
+				"responses": {
+					"201": {
+						"description": "fetched successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IMaterialPost"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/materialpost/{materialpostId}": {
+			"get": {
+				"operationId": "GetPostById",
+				"responses": {
+					"201": {
+						"description": "fetched successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IMaterialPost"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "materialpostId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdatematerialPost",
+				"responses": {
+					"201": {
+						"description": "updated successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IMaterialPost"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "materialpostId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string"
+									},
+									"adresse": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"workerId": {
+										"type": "string"
+									},
+									"photo": {
+										"type": "string",
+										"format": "binary"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"201": {
+						"description": "deleted successfully"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "materialpostId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/post": {

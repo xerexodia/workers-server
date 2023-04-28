@@ -9,6 +9,8 @@ import { ClientsRegisterController } from './../../Controllers/auth/registerClie
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WorkersRegisterController } from './../../Controllers/auth/registerWorkerController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { materialPostController } from './../../Controllers/post/materialpostController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PostController } from './../../Controllers/post/postController';
 import type { RequestHandler, Router } from 'express';
 const multer = require('multer');
@@ -40,6 +42,20 @@ const models: TsoaRoute.Models = {
     "Payload": {
         "dataType": "refAlias",
         "type": {"ref":"Pick_IWorker.email-or-password_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IMaterialPost": {
+        "dataType": "refObject",
+        "properties": {
+            "title": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "updatedAt": {"dataType":"string"},
+            "workerId": {"dataType":"string"},
+            "adresse": {"dataType":"string"},
+            "photo": {"dataType":"string"},
+            "createdAt": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IPost": {
@@ -162,6 +178,143 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.createWorker.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/materialpost',
+            upload.single('photo'),
+            ...(fetchMiddlewares<RequestHandler>(materialPostController)),
+            ...(fetchMiddlewares<RequestHandler>(materialPostController.prototype.createPost)),
+
+            function materialPostController_createPost(request: any, response: any, next: any) {
+            const args = {
+                    title: {"in":"formData","name":"title","required":true,"dataType":"string"},
+                    adresse: {"in":"formData","name":"adresse","required":true,"dataType":"string"},
+                    description: {"in":"formData","name":"description","required":true,"dataType":"string"},
+                    workerId: {"in":"formData","name":"workerId","required":true,"dataType":"string"},
+                    photo: {"in":"formData","name":"photo","required":true,"dataType":"file"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new materialPostController();
+
+
+              const promise = controller.createPost.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/materialpost',
+            ...(fetchMiddlewares<RequestHandler>(materialPostController)),
+            ...(fetchMiddlewares<RequestHandler>(materialPostController.prototype.getmaterialposts)),
+
+            function materialPostController_getmaterialposts(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new materialPostController();
+
+
+              const promise = controller.getmaterialposts.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/materialpost/:materialpostId',
+            ...(fetchMiddlewares<RequestHandler>(materialPostController)),
+            ...(fetchMiddlewares<RequestHandler>(materialPostController.prototype.getPostById)),
+
+            function materialPostController_getPostById(request: any, response: any, next: any) {
+            const args = {
+                    materialpostId: {"in":"path","name":"materialpostId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new materialPostController();
+
+
+              const promise = controller.getPostById.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/materialpost/:materialpostId',
+            upload.single('photo'),
+            ...(fetchMiddlewares<RequestHandler>(materialPostController)),
+            ...(fetchMiddlewares<RequestHandler>(materialPostController.prototype.updatematerialPost)),
+
+            function materialPostController_updatematerialPost(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    materialpostId: {"in":"path","name":"materialpostId","required":true,"dataType":"string"},
+                    title: {"in":"formData","name":"title","dataType":"string"},
+                    adresse: {"in":"formData","name":"adresse","dataType":"string"},
+                    description: {"in":"formData","name":"description","dataType":"string"},
+                    workerId: {"in":"formData","name":"workerId","dataType":"string"},
+                    photo: {"in":"formData","name":"photo","dataType":"file"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new materialPostController();
+
+
+              const promise = controller.updatematerialPost.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/materialpost/:materialpostId',
+            ...(fetchMiddlewares<RequestHandler>(materialPostController)),
+            ...(fetchMiddlewares<RequestHandler>(materialPostController.prototype.delete)),
+
+            function materialPostController_delete(request: any, response: any, next: any) {
+            const args = {
+                    materialpostId: {"in":"path","name":"materialpostId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new materialPostController();
+
+
+              const promise = controller.delete.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 201, next);
             } catch (err) {
                 return next(err);

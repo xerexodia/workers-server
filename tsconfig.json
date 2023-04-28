@@ -5,6 +5,7 @@
     "target": "es6",
     "module": "commonjs",
     "outDir": "build",
+    "typeRoots": ["node_modules/@types"],
 
     /* Strict Type-Checking Options */
     "strict": true,

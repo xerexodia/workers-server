@@ -24,7 +24,7 @@ import { PostServices } from '../../Services/postServices';
 import { IResPost } from '../../Models/reservedPost';
 
 // post controller
-@Route('post')
+@Route('/posts')
 export class PostController extends Controller {
   // add a post
   @SuccessResponse('201', 'created successfully') // Custom success response

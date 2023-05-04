@@ -8,6 +8,7 @@ export interface IPost {
   adresse?: string;
   photo?: string;
   createdAt: string;
+  comments?: any[];
   status: 'pending' | 'reserved' | 'completed';
 }
 
@@ -38,6 +39,7 @@ const postSchema = new mongoose.Schema<IPost>({
     type: String,
     default: 'pending',
   },
+  // comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
 const Post = mongoose.model<IPost>('Post', postSchema);

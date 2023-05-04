@@ -6,30 +6,73 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"FlattenMaps_T_": {
-				"properties": {},
-				"type": "object"
-			},
-			"IWorker": {
-				"$ref": "#/components/schemas/FlattenMaps_T_"
-			},
-			"IClient": {
-				"$ref": "#/components/schemas/FlattenMaps_T_"
-			},
-			"Pick_IWorker.email-or-password_": {
+			"IAdmin": {
 				"properties": {
 					"email": {
 						"type": "string"
 					},
 					"password": {
 						"type": "string"
+					},
+					"role": {
+						"type": "string"
 					}
 				},
 				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
+				"additionalProperties": false
 			},
-			"Payload": {
-				"$ref": "#/components/schemas/Pick_IWorker.email-or-password_"
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"IClient": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"IWorker": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"IPost": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"updatedAt": {
+						"type": "string"
+					},
+					"clientId": {
+						"type": "string"
+					},
+					"adresse": {
+						"type": "string"
+					},
+					"photo": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string"
+					},
+					"comments": {
+						"items": {},
+						"type": "array"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"reserved",
+							"completed"
+						]
+					}
+				},
+				"required": [
+					"createdAt",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
 			},
 			"IMaterialPost": {
 				"properties": {
@@ -61,44 +104,20 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IPost": {
+			"Pick_IWorker.email-or-password_": {
 				"properties": {
-					"title": {
+					"email": {
 						"type": "string"
 					},
-					"description": {
+					"password": {
 						"type": "string"
-					},
-					"updatedAt": {
-						"type": "string"
-					},
-					"clientId": {
-						"type": "string"
-					},
-					"adresse": {
-						"type": "string"
-					},
-					"photo": {
-						"type": "string"
-					},
-					"createdAt": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string",
-						"enum": [
-							"pending",
-							"reserved",
-							"completed"
-						]
 					}
 				},
-				"required": [
-					"createdAt",
-					"status"
-				],
 				"type": "object",
-				"additionalProperties": false
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Payload": {
+				"$ref": "#/components/schemas/Pick_IWorker.email-or-password_"
 			},
 			"IResPost": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
@@ -119,6 +138,389 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/admin/login": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAdmin"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "welcome"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IAdmin"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/admin/clients": {
+			"get": {
+				"operationId": "GetAllClients",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IClient"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "data fetched succesfully"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/admin/clients/{id}": {
+			"get": {
+				"operationId": "GetClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IClient"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "client fetched successfully"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteClient",
+				"responses": {
+					"201": {
+						"description": "client deleted successfully"
+					},
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/admin/workers": {
+			"get": {
+				"operationId": "GetAllWorkers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IWorker"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "data fetched succesfully"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/admin/workers/{id}": {
+			"get": {
+				"operationId": "GetWorkerById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorker"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "worker fetched successfully"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteWorker",
+				"responses": {
+					"201": {
+						"description": "worker deleted successfully"
+					},
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/admin/posts": {
+			"get": {
+				"operationId": "GetAllPosts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IPost"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "data fetched successfully"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/admin/posts/{id}": {
+			"get": {
+				"operationId": "GetPostById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPost"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "post fetched successfully"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeletePost",
+				"responses": {
+					"201": {
+						"description": "post deleted successfully"
+					},
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/admin/materialPosts": {
+			"get": {
+				"operationId": "GetAllMaterialPosts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IMaterialPost"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "data fetched successfully"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/admin/materialPosts/{id}": {
+			"get": {
+				"operationId": "GetMaterialPostById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IMaterialPost"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "post fetched successfully"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteMaterialPost",
+				"responses": {
+					"201": {
+						"description": "post deleted successfully"
+					},
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"AdminController"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/login": {
 			"post": {
 				"operationId": "LoginUser",
@@ -531,7 +933,7 @@
 				]
 			}
 		},
-		"/post": {
+		"/posts": {
 			"post": {
 				"operationId": "CreatePost",
 				"responses": {
@@ -657,7 +1059,7 @@
 				]
 			}
 		},
-		"/post/{postId}": {
+		"/posts/{postId}": {
 			"get": {
 				"operationId": "GetPostById",
 				"responses": {

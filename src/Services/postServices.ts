@@ -2,7 +2,7 @@ import Client from '../Models/client';
 import Post, { IPost } from '../Models/post';
 import ReservedPost, { IResPost } from '../Models/reservedPost';
 
-export type Payload = Omit<IPost, 'status' | 'createdAt' | 'updatedAt'>;
+export type Payload = Omit<IPost, 'status' | 'createdAt' | 'updatedAt' | 'comments'>;
 export class PostServices {
   async create(payload: Payload): Promise<IPost> {
     const date = new Date().toLocaleDateString('en-GB');

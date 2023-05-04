@@ -20,10 +20,10 @@ import { IMaterialPost } from '../../Models/materialpost';
 //import { hashIt, validateEmail } from '../../utils/helpers';
 import { IWorker } from '../../Models/worker';
 //import { WorkersServices } from '../../Services/workerServices';
-import { materialpostServices } from '../../Services/materialpostServices';
+import { MaterialpostServices } from '../../Services/materialpostServices';
 
 // materialpost controller
-@Route('materialpost')
+@Route('/materialpost')
 export class materialPostController extends Controller {
   // add a materialpost
   @SuccessResponse('201', 'created successfully') // Custom success response
@@ -41,7 +41,7 @@ export class materialPostController extends Controller {
     const imagename = `${Date.now()}.jpeg`;
     fs.writeFileSync(`./src/uploads/${imagename}`, buffer);
     const basePath = `${req?.protocol}://${req?.get('host')}/src/uploads/`;
-    const materialpost = await new materialpostServices().create({
+    const materialpost = await new MaterialpostServices().create({
       title,
       adresse,
       description,
@@ -54,7 +54,7 @@ export class materialPostController extends Controller {
   @SuccessResponse('201', 'fetched successfully') // Custom success response
   @Get()
   public async getmaterialposts(): Promise<IMaterialPost[]> {
-    const materialposts = await new materialpostServices().getAll();
+    const materialposts = await new MaterialpostServices().getAll();
     return materialposts;
   }
 
@@ -62,7 +62,7 @@ export class materialPostController extends Controller {
   @SuccessResponse('201', 'fetched successfully') // Custom success response
   @Get('{materialpostId}')
   public async getPostById(@Path() materialpostId: string): Promise<IMaterialPost> {
-    const posts = await new materialpostServices().getById(materialpostId);
+    const posts = await new MaterialpostServices().getById(materialpostId);
     return posts;
   }
 
@@ -83,7 +83,7 @@ export class materialPostController extends Controller {
     const imagename = `${Date.now()}.jpeg`;
     fs.writeFileSync(`./src/uploads/${imagename}`, buffer);
     const basePath = `${req?.protocol}://${req?.get('host')}/src/uploads/`;
-    const post = await new materialpostServices().update(materialpostId, {
+    const post = await new MaterialpostServices().update(materialpostId, {
       title,
       adresse,
       description,
@@ -97,6 +97,6 @@ export class materialPostController extends Controller {
   @SuccessResponse('201', 'deleted successfully') // Custom success response
   @Delete('{materialpostId}')
   public async delete(@Path() materialpostId: string): Promise<void> {
-    await new materialpostServices().delete(materialpostId);
+    await new MaterialpostServices().delete(materialpostId);
   }
 }

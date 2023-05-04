@@ -2,7 +2,7 @@ import Client from '../Models/worker';
 import Post, { IMaterialPost } from '../Models/materialpost';
 
 export type Payload = Omit<IMaterialPost, 'createdAt' | 'updatedAt'>;
-export class materialpostServices {
+export class MaterialpostServices {
   async create(payload: Payload): Promise<IMaterialPost> {
     const date = new Date().toLocaleDateString('en-GB');
     return await new Post({ ...payload, createdAt: date }).save();

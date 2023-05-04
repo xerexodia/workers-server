@@ -19,23 +19,29 @@ export class WorkersServices {
     };
     return await new Worker(worker).save();
   }
-
   // get worker by profession
   public async getByProfession(profession: string): Promise<IWorker[]> {
     const reg = new RegExp(profession, 'g');
     const worker = await Worker.find({ profession: { $regex: reg } });
-
     return worker;
   }
-
   // update by id
   public async update(id: string, payload: Payload): Promise<IWorker> {
     const worker = await Worker.findByIdAndUpdate(id, { ...payload }, { new: true });
     return worker!;
   }
+  // get by mail
   public async findWorker(email: string): Promise<IWorker | undefined> {
     const worker = await Worker.findOne({ email });
     if (worker) return worker!;
     return;
+  }
+  //get all workers
+  public async getAllWorkers(): Promise<IWorker[]> {
+    return await Worker.find();
+  }
+  //delete worker
+  public async deleteWorker(id: string): Promise<void> {
+    await Worker.findByIdAndRemove(id);
   }
 }

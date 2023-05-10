@@ -21,14 +21,9 @@ const upload = multer();
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "IAdmin": {
-        "dataType": "refObject",
-        "properties": {
-            "email": {"dataType":"string"},
-            "password": {"dataType":"string"},
-            "role": {"dataType":"string"},
-        },
-        "additionalProperties": false,
+    "Pick_IAdmin.email-or-password_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string"},"password":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "FlattenMaps_T_": {
@@ -107,7 +102,7 @@ export function RegisterRoutes(app: Router) {
 
             function AdminController_create(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"IAdmin"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"Pick_IAdmin.email-or-password_"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

@@ -6,20 +6,17 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"IAdmin": {
+			"Pick_IAdmin.email-or-password_": {
 				"properties": {
 					"email": {
 						"type": "string"
 					},
 					"password": {
 						"type": "string"
-					},
-					"role": {
-						"type": "string"
 					}
 				},
 				"type": "object",
-				"additionalProperties": false
+				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"FlattenMaps_T_": {
 				"properties": {},
@@ -146,9 +143,7 @@
 						"description": "Ok",
 						"content": {
 							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IAdmin"
-								}
+								"schema": {}
 							}
 						}
 					},
@@ -166,7 +161,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IAdmin"
+								"$ref": "#/components/schemas/Pick_IAdmin.email-or-password_"
 							}
 						}
 					}

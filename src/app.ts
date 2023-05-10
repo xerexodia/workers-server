@@ -3,6 +3,7 @@ import express, { json, urlencoded, Response as ExResponse, Request as ExRequest
 import swaggerUi from 'swagger-ui-express';
 
 import { RegisterRoutes } from './Services/router/routes';
+var cors = require('cors');
 
 export const app = express();
 
@@ -16,6 +17,8 @@ app.use(
 app.use('/src/uploads', express.static(__dirname + '/uploads'));
 console.log(__dirname + 'uploads');
 
+app.use(cors());
+app.options('*', cors());
 app.use('/docs', swaggerUi.serve, async (req: ExRequest, res: ExResponse) => {
   return res.send(swaggerUi.generateHTML(await require('./Services/swagger/swagger.json')));
 });

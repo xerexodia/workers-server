@@ -9,6 +9,7 @@ import { IPost } from '../../Models/post';
 import { PostServices } from '../../Services/postServices';
 import { MaterialpostServices } from '../../Services/materialpostServices';
 import { IMaterialPost } from '../../Models/materialpost';
+import { compareIt } from '../../utils/helpers';
 
 @Route('/admin')
 @Tags('AdminController')
@@ -16,9 +17,13 @@ export class AdminController extends Controller {
   // login....
   @Post('/login')
   @Response('201', 'welcome')
-  public async create(@Body() requestBody: IAdmin): Promise<IAdmin> {
+  public async create(@Body() requestBody: Pick<IAdmin, 'email' | 'password'>): Promise<any> {
     const admin = await new AdminService().loginAdmin(requestBody.email!);
-    return admin;
+    if (admin) {
+      if (compareIt(requestBody?.password, admin.password)) {
+        return admin;
+      } else return { msg: 'wrong password' };
+    } else return { msg: 'access denied' };
   }
   // get clients
   @Get('/clients')
@@ -94,6 +99,6 @@ export class AdminController extends Controller {
   @Delete('/materialPosts/{id}')
   @Response('201', 'post deleted successfully')
   public async deleteMaterialPost(@Path() id: string): Promise<void> {
-    await new PostServices().delete(id);
+    await new MaterialpostServices().delete(id);
   }
 }

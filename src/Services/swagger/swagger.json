@@ -116,6 +116,24 @@
 			"Payload": {
 				"$ref": "#/components/schemas/Pick_IWorker.email-or-password_"
 			},
+			"IComment": {
+				"properties": {
+					"creatorId": {
+						"type": "string"
+					},
+					"postId": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"postId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IResPost": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			}
@@ -751,6 +769,141 @@
 						}
 					}
 				}
+			}
+		},
+		"/comment": {
+			"post": {
+				"operationId": "AddComment",
+				"responses": {
+					"201": {
+						"description": "created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IComment"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"comments"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IComment"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetAllComments",
+				"responses": {
+					"200": {
+						"description": "created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IComment"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"comments"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/comment/{id}": {
+			"patch": {
+				"operationId": "UpdateComment",
+				"responses": {
+					"201": {
+						"description": "updated successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IComment"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"comments"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IComment"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"204": {
+						"description": "deleted successfully"
+					}
+				},
+				"tags": [
+					"comments"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/materialpost": {

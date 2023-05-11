@@ -11,6 +11,8 @@ import { ClientsRegisterController } from './../../Controllers/auth/registerClie
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WorkersRegisterController } from './../../Controllers/auth/registerWorkerController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CommentController } from './../../Controllers/post/commentController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { materialPostController } from './../../Controllers/post/materialpostController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PostController } from './../../Controllers/post/postController';
@@ -79,6 +81,16 @@ const models: TsoaRoute.Models = {
     "Payload": {
         "dataType": "refAlias",
         "type": {"ref":"Pick_IWorker.email-or-password_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IComment": {
+        "dataType": "refObject",
+        "properties": {
+            "creatorId": {"dataType":"string"},
+            "postId": {"dataType":"string","required":true},
+            "content": {"dataType":"string"},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IResPost": {
@@ -508,6 +520,108 @@ export function RegisterRoutes(app: Router) {
 
               const promise = controller.createWorker.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/comment',
+            ...(fetchMiddlewares<RequestHandler>(CommentController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentController.prototype.addComment)),
+
+            function CommentController_addComment(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"body","name":"request","required":true,"ref":"IComment"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CommentController();
+
+
+              const promise = controller.addComment.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/comment',
+            ...(fetchMiddlewares<RequestHandler>(CommentController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentController.prototype.getAllComments)),
+
+            function CommentController_getAllComments(request: any, response: any, next: any) {
+            const args = {
+                    postId: {"in":"query","name":"postId","required":true,"dataType":"string"},
+                    userId: {"in":"query","name":"userId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CommentController();
+
+
+              const promise = controller.getAllComments.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/comment/:id',
+            ...(fetchMiddlewares<RequestHandler>(CommentController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentController.prototype.UpdateComment)),
+
+            function CommentController_UpdateComment(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"body","name":"request","required":true,"ref":"IComment"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CommentController();
+
+
+              const promise = controller.UpdateComment.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/comment/:id',
+            ...(fetchMiddlewares<RequestHandler>(CommentController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentController.prototype.delete)),
+
+            function CommentController_delete(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CommentController();
+
+
+              const promise = controller.delete.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 204, next);
             } catch (err) {
                 return next(err);
             }

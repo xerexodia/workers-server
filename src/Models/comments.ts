@@ -18,7 +18,7 @@ const commentSchema = new mongoose.Schema<IComment>(
       type: String,
     },
   },
-  // { timestamps: true },
+  { timestamps: true },
 );
 
 const Comment = mongoose.model<IComment>('Comment', commentSchema);

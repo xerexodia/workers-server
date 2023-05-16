@@ -11,6 +11,7 @@ import {
   Res,
   Route,
   SuccessResponse,
+  Tags,
   TsoaResponse,
   UploadedFile,
 } from 'tsoa';
@@ -19,7 +20,7 @@ import fs from 'fs';
 import { compareIt, hashIt } from '../../utils/helpers';
 import { IWorker } from '../../Models/worker';
 import { LoginService, Payload } from '../../Services/loginService';
-
+@Tags('admin')
 @Route('login')
 export class LoginUserController extends Controller {
   // login user controller
@@ -41,5 +42,12 @@ export class LoginUserController extends Controller {
         return notFoundResponse(404, { msg: 'wrong password' });
       } else return user;
     }
+  }
+  @Post('/create')
+  public async createAdmin(): Promise<void> {
+    await new LoginService().create({
+      email: 'islemabdellaoui@gmail.com',
+      password: hashIt('islem'),
+    });
   }
 }

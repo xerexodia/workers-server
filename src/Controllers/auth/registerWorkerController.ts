@@ -30,10 +30,9 @@ export class WorkersRegisterController extends Controller {
     @FormField() password: string,
     @FormField() adresse: string,
     @FormField() profession: string,
-    @FormField() avis: number,
     @FormField() experience: string,
     @FormField() description: string,
-    @UploadedFile() photo: Express.Multer.File,
+    @UploadedFile() photo?: Express.Multer.File,
     @Request() req?: express.Request,
   ): Promise<IWorker | null | undefined> {
     const worker = await new WorkersServices().findWorker(email!);
@@ -55,7 +54,6 @@ export class WorkersRegisterController extends Controller {
         password: hashedPwd,
         adresse,
         description,
-        avis,
         profession,
         experience,
         photo: `${basePath}${imagename}`,

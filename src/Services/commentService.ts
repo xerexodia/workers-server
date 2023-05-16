@@ -2,10 +2,11 @@ import Comment, { IComment } from '../Models/comments';
 
 export class CommentServices {
   async create(payload: IComment): Promise<IComment> {
-    return await new Comment(payload).save();
+    const comment = await new Comment(payload).save();
+    return comment.populate('creatorId');
   }
-  async getAllByCommentsId(id: string, userId: string): Promise<IComment[]> {
-    return await Comment.find({ postId: id, creatorId: userId });
+  async getAllByCommentsId(id: string): Promise<IComment[]> {
+    return await Comment.find({ postId: id });
   }
   async delete(id: string): Promise<void> {
     await Comment.findByIdAndRemove(id);

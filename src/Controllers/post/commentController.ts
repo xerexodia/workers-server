@@ -25,6 +25,8 @@ import { IWorker } from '../../Models/worker';
 import { MaterialpostServices } from '../../Services/materialpostServices';
 import { IComment } from '../../Models/comments';
 import { CommentServices } from '../../Services/commentService';
+import { ClientsService } from '../../Services/clientsService';
+import { WorkersServices } from '../../Services/workerServices';
 
 // comment controller
 @Tags('comments')
@@ -34,13 +36,26 @@ export class CommentController extends Controller {
   @SuccessResponse('201', 'created successfully') // Custom success response
   @Post()
   public async addComment(@Body() request: IComment): Promise<IComment> {
-    return await new CommentServices().create(request);
+    const comment = await new CommentServices().create(request);
+    return comment;
   }
   //fetch comments
   @SuccessResponse('200', 'created successfully') // Custom success response
   @Get()
-  public async getAllComments(@Query() postId: string, @Query() userId: string): Promise<IComment[]> {
-    return await new CommentServices().getAllByCommentsId(postId, userId);
+  public async getAllComments(@Query() postId: string): Promise<any> {
+    const comment = new CommentServices().getAllByCommentsId(postId);
+    const data = Promise.all(
+      (await comment).map(async (item) => {
+        const worker = await new WorkersServices().getById(item.creatorId!);
+        const client = await new ClientsService().get(item.creatorId!);
+        if (client) {
+          return { comment: item, user: client };
+        } else if (worker) {
+          return { comment: item, user: worker };
+        } else return;
+      }),
+    );
+    return data;
   }
   //upadte comment
   @SuccessResponse('201', 'updated successfully') // Custom success response

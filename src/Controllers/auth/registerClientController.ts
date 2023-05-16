@@ -1,7 +1,8 @@
 import multer from 'multer';
 import { IClient } from '../../Models/client';
-import { ClientsService } from '../../Services/clientsService';
+import { ClientsService, Payload } from '../../Services/clientsService';
 import {
+  Body,
   Controller,
   FormField,
   Get,
@@ -24,38 +25,21 @@ export class ClientsRegisterController extends Controller {
   @SuccessResponse('201', 'Bienvenue') // Custom success response
   @Post()
   public async createClient(
-    @Res() notFoundResponse: TsoaResponse<401, { msg: string }>,
-    @FormField() nom: string,
-    @FormField() prenom: string,
-    @FormField() email: string,
-    @FormField() password: string,
-    @FormField() adresse: string,
-    @Request() req: express.Request,
-    @UploadedFile() photo: Express.Multer.File,
-  ): Promise<IClient | undefined | string> {
-    const client = await new ClientsService().findClient(email!);
+    @Body() request: Pick<IClient, 'nom' | 'prenom' | 'password' | 'adresse' | 'email'>,
+  ): Promise<any> {
+    const client = await new ClientsService().findClient(request.email!);
     if (client) {
-      return notFoundResponse(401, { msg: 'you have already an account' });
+      return { msg: 'you have already an account' };
     } else {
-      if (!validateEmail(email)) return notFoundResponse(401, { msg: 'wrong mail' });
-      if (password.length <= 8) return notFoundResponse(401, { msg: 'password must be at least 8 characters' });
-      const b64 = Buffer.from(photo?.buffer as any).toString('base64');
-      const buffer = Buffer.from(b64, 'base64');
-      const imagename = `${Date.now()}.jpeg`;
-      fs.writeFileSync(`./src/uploads/${imagename}`, buffer);
-      const basePath = `${req?.protocol}://${req?.get('host')}/src/uploads/`;
-      const hashedPwd = hashIt(password);
+      if (!validateEmail(request.email!)) return { msg: 'wrong mail' };
+      if (request.password!.length <= 8) return { msg: 'password must be at least 8 characters' };
+
+      const hashedPwd = hashIt(request.password);
 
       return await new ClientsService().create({
-        nom,
-        prenom,
-        email,
+        ...request,
         password: hashedPwd,
-        adresse,
-        photo: `${basePath}${imagename}`,
       });
     }
-
-    return;
   }
 }

@@ -58,6 +58,12 @@ export class PostController extends Controller {
     const posts = await new PostServices().getAll();
     return posts;
   }
+  @SuccessResponse('201', 'fetched successfully') // Custom success response
+  @Get('client/{clientId}')
+  public async getPostsByClientId(@Path() clientId: string): Promise<IPost[]> {
+    const posts = await new PostServices().getByClientID(clientId);
+    return posts;
+  }
 
   // get post by id
   @SuccessResponse('201', 'fetched successfully') // Custom success response

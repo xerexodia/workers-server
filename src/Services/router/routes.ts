@@ -16,6 +16,8 @@ import { CommentController } from './../../Controllers/post/commentController';
 import { materialPostController } from './../../Controllers/post/materialpostController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PostController } from './../../Controllers/post/postController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { UserssRegisterController } from './../../Controllers/users/usersController';
 import type { RequestHandler, Router } from 'express';
 const multer = require('multer');
 const upload = multer();
@@ -81,6 +83,11 @@ const models: TsoaRoute.Models = {
     "Payload": {
         "dataType": "refAlias",
         "type": {"ref":"Pick_IWorker.email-or-password_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_IClient.nom-or-prenom-or-password-or-adresse-or-email_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string"},"password":{"dataType":"string"},"nom":{"dataType":"string"},"prenom":{"dataType":"string"},"adresse":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IComment": {
@@ -455,21 +462,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/login/create',
+            ...(fetchMiddlewares<RequestHandler>(LoginUserController)),
+            ...(fetchMiddlewares<RequestHandler>(LoginUserController.prototype.createAdmin)),
+
+            function LoginUserController_createAdmin(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new LoginUserController();
+
+
+              const promise = controller.createAdmin.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/register/clients',
-            upload.single('photo'),
             ...(fetchMiddlewares<RequestHandler>(ClientsRegisterController)),
             ...(fetchMiddlewares<RequestHandler>(ClientsRegisterController.prototype.createClient)),
 
             function ClientsRegisterController_createClient(request: any, response: any, next: any) {
             const args = {
-                    notFoundResponse: {"in":"res","name":"401","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"msg":{"dataType":"string","required":true}}},
-                    nom: {"in":"formData","name":"nom","required":true,"dataType":"string"},
-                    prenom: {"in":"formData","name":"prenom","required":true,"dataType":"string"},
-                    email: {"in":"formData","name":"email","required":true,"dataType":"string"},
-                    password: {"in":"formData","name":"password","required":true,"dataType":"string"},
-                    adresse: {"in":"formData","name":"adresse","required":true,"dataType":"string"},
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
-                    photo: {"in":"formData","name":"photo","required":true,"dataType":"file"},
+                    request: {"in":"body","name":"request","required":true,"ref":"Pick_IClient.nom-or-prenom-or-password-or-adresse-or-email_"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -502,10 +525,9 @@ export function RegisterRoutes(app: Router) {
                     password: {"in":"formData","name":"password","required":true,"dataType":"string"},
                     adresse: {"in":"formData","name":"adresse","required":true,"dataType":"string"},
                     profession: {"in":"formData","name":"profession","required":true,"dataType":"string"},
-                    avis: {"in":"formData","name":"avis","required":true,"dataType":"string"},
                     experience: {"in":"formData","name":"experience","required":true,"dataType":"string"},
                     description: {"in":"formData","name":"description","required":true,"dataType":"string"},
-                    photo: {"in":"formData","name":"photo","required":true,"dataType":"file"},
+                    photo: {"in":"formData","name":"photo","dataType":"file"},
                     req: {"in":"request","name":"req","dataType":"object"},
             };
 
@@ -557,7 +579,6 @@ export function RegisterRoutes(app: Router) {
             function CommentController_getAllComments(request: any, response: any, next: any) {
             const args = {
                     postId: {"in":"query","name":"postId","required":true,"dataType":"string"},
-                    userId: {"in":"query","name":"userId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -819,6 +840,31 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/posts/client/:clientId',
+            ...(fetchMiddlewares<RequestHandler>(PostController)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.getPostsByClientId)),
+
+            function PostController_getPostsByClientId(request: any, response: any, next: any) {
+            const args = {
+                    clientId: {"in":"path","name":"clientId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PostController();
+
+
+              const promise = controller.getPostsByClientId.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/posts/:postId',
             ...(fetchMiddlewares<RequestHandler>(PostController)),
             ...(fetchMiddlewares<RequestHandler>(PostController.prototype.getPostById)),
@@ -922,6 +968,39 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.reserve.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/clients/update/:id',
+            upload.single('photo'),
+            ...(fetchMiddlewares<RequestHandler>(UserssRegisterController)),
+            ...(fetchMiddlewares<RequestHandler>(UserssRegisterController.prototype.updateClient)),
+
+            function UserssRegisterController_updateClient(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    nom: {"in":"formData","name":"nom","dataType":"string"},
+                    prenom: {"in":"formData","name":"prenom","dataType":"string"},
+                    email: {"in":"formData","name":"email","dataType":"string"},
+                    password: {"in":"formData","name":"password","dataType":"string"},
+                    adresse: {"in":"formData","name":"adresse","dataType":"string"},
+                    photo: {"in":"formData","name":"photo","dataType":"file"},
+                    req: {"in":"request","name":"req","dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new UserssRegisterController();
+
+
+              const promise = controller.updateClient.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 201, next);
             } catch (err) {
                 return next(err);

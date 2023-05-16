@@ -17,6 +17,10 @@ export class PostServices {
     const post = await Post.findById(id).populate('clientId');
     return post!;
   }
+  async getByClientID(id: string): Promise<IPost[]> {
+    const post = await Post.find({ clientId: id }).populate('clientId');
+    return post!;
+  }
   async getAll(): Promise<IPost[]> {
     const post = await Post.find({ status: 'pending' }).populate('clientId');
     return post!;

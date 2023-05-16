@@ -116,6 +116,27 @@
 			"Payload": {
 				"$ref": "#/components/schemas/Pick_IWorker.email-or-password_"
 			},
+			"Pick_IClient.nom-or-prenom-or-password-or-adresse-or-email_": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"nom": {
+						"type": "string"
+					},
+					"prenom": {
+						"type": "string"
+					},
+					"adresse": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
 			"IComment": {
 				"properties": {
 					"creatorId": {
@@ -577,6 +598,9 @@
 						}
 					}
 				},
+				"tags": [
+					"admin"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -591,6 +615,21 @@
 				}
 			}
 		},
+		"/login/create": {
+			"post": {
+				"operationId": "CreateAdmin",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"admin"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/register/clients": {
 			"post": {
 				"operationId": "CreateClient",
@@ -599,34 +638,7 @@
 						"description": "Bienvenue",
 						"content": {
 							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/IClient"
-										},
-										{
-											"type": "string"
-										}
-									]
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"msg": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"msg"
-									],
-									"type": "object"
-								}
+								"schema": {}
 							}
 						}
 					}
@@ -636,38 +648,9 @@
 				"requestBody": {
 					"required": true,
 					"content": {
-						"multipart/form-data": {
+						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": {
-									"nom": {
-										"type": "string"
-									},
-									"prenom": {
-										"type": "string"
-									},
-									"email": {
-										"type": "string"
-									},
-									"password": {
-										"type": "string"
-									},
-									"adresse": {
-										"type": "string"
-									},
-									"photo": {
-										"type": "string",
-										"format": "binary"
-									}
-								},
-								"required": [
-									"nom",
-									"prenom",
-									"email",
-									"password",
-									"adresse",
-									"photo"
-								]
+								"$ref": "#/components/schemas/Pick_IClient.nom-or-prenom-or-password-or-adresse-or-email_"
 							}
 						}
 					}
@@ -739,9 +722,6 @@
 									"profession": {
 										"type": "string"
 									},
-									"avis": {
-										"type": "string"
-									},
 									"experience": {
 										"type": "string"
 									},
@@ -760,10 +740,8 @@
 									"password",
 									"adresse",
 									"profession",
-									"avis",
 									"experience",
-									"description",
-									"photo"
+									"description"
 								]
 							}
 						}
@@ -809,12 +787,7 @@
 						"description": "created successfully",
 						"content": {
 							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IComment"
-									},
-									"type": "array"
-								}
+								"schema": {}
 							}
 						}
 					}
@@ -827,14 +800,6 @@
 					{
 						"in": "query",
 						"name": "postId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "userId",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -1207,6 +1172,37 @@
 				]
 			}
 		},
+		"/posts/client/{clientId}": {
+			"get": {
+				"operationId": "GetPostsByClientId",
+				"responses": {
+					"201": {
+						"description": "fetched successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IPost"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "clientId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/posts/{postId}": {
 			"get": {
 				"operationId": "GetPostById",
@@ -1306,6 +1302,66 @@
 						}
 					}
 				]
+			}
+		},
+		"/clients/update/{id}": {
+			"patch": {
+				"operationId": "UpdateClient",
+				"responses": {
+					"201": {
+						"description": "Bienvenue",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"clients"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"nom": {
+										"type": "string"
+									},
+									"prenom": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									},
+									"adresse": {
+										"type": "string"
+									},
+									"photo": {
+										"type": "string",
+										"format": "binary"
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	},

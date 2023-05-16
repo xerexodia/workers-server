@@ -1,3 +1,4 @@
+import Admin, { IAdmin } from '../Models/admin';
 import Client, { IClient } from '../Models/client';
 import Worker, { IWorker } from '../Models/worker';
 // A post request should not contain an id.
@@ -17,5 +18,8 @@ export class LoginService {
       console.log(error);
     }
     return;
+  }
+  public async create(payload: IAdmin): Promise<void> {
+    await new Admin(payload).save();
   }
 }

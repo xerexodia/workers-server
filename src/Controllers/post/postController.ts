@@ -106,6 +106,7 @@ export class PostController extends Controller {
   public async delete(@Path() postId: string): Promise<void> {
     await new PostServices().delete(postId);
   }
+  //reserve post
   @SuccessResponse('201', 'deleted successfully') // Custom success response
   @Patch()
   public async reserve(
@@ -119,5 +120,10 @@ export class PostController extends Controller {
     }
     const resPost = await new PostServices().reservePost(postId, workerId);
     return resPost!;
+  }
+
+  @Get('reserved/post/{id}')
+  public async getReservedPost(@Path() id: string): Promise<IResPost[]> {
+    return await new PostServices().getReservedPost(id);
   }
 }

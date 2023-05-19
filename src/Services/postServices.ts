@@ -37,4 +37,8 @@ export class PostServices {
     }
     return;
   }
+
+  async getReservedPost(id: string): Promise<IResPost[]> {
+    return await ReservedPost.find({ workerId: id }).populate('postId workerId');
+  }
 }

@@ -15,7 +15,6 @@ app.use(
 );
 
 app.use('/src/uploads', express.static(__dirname + '/uploads'));
-console.log(__dirname + 'uploads');
 
 app.use(cors());
 app.options('*', cors());

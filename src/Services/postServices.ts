@@ -37,8 +37,17 @@ export class PostServices {
     }
     return;
   }
+  async completedPost(postId: string): Promise<any> {
+    const patchedPost = await Post.findByIdAndUpdate(postId, { status: 'completed' }, { new: true });
+    console.log(patchedPost);
+  }
 
   async getReservedPost(id: string): Promise<IResPost[]> {
-    return await ReservedPost.find({ workerId: id }).populate('postId workerId');
+    const resPost = await ReservedPost.find({ workerId: id }).populate('postId workerId');
+    return resPost.filter((item: any) => item.postId.status === 'reserved');
+  }
+  async getCompletedPost(id: string): Promise<IResPost[]> {
+    const res = await ReservedPost.find({ workerId: id }).populate('workerId postId');
+    return res.filter((item: any) => item.postId.status === 'completed');
   }
 }

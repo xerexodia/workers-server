@@ -11,6 +11,8 @@ import { ClientsRegisterController } from './../../Controllers/auth/registerClie
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WorkersRegisterController } from './../../Controllers/auth/registerWorkerController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ChatController } from './../../Controllers/chat/chatController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CommentController } from './../../Controllers/post/commentController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { materialPostController } from './../../Controllers/post/materialpostController';
@@ -88,6 +90,15 @@ const models: TsoaRoute.Models = {
     "Pick_IClient.nom-or-prenom-or-password-or-adresse-or-email_": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string"},"password":{"dataType":"string"},"nom":{"dataType":"string"},"prenom":{"dataType":"string"},"adresse":{"dataType":"string"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IMsg": {
+        "dataType": "refObject",
+        "properties": {
+            "content": {"dataType":"string"},
+            "from": {"dataType":"string"},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IComment": {
@@ -547,6 +558,58 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/chat/:firstUser/:secondUser',
+            ...(fetchMiddlewares<RequestHandler>(ChatController)),
+            ...(fetchMiddlewares<RequestHandler>(ChatController.prototype.addComment)),
+
+            function ChatController_addComment(request: any, response: any, next: any) {
+            const args = {
+                    firstUser: {"in":"path","name":"firstUser","required":true,"dataType":"string"},
+                    secondUser: {"in":"path","name":"secondUser","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new ChatController();
+
+
+              const promise = controller.addComment.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/chat/msg/:chatRoomId',
+            ...(fetchMiddlewares<RequestHandler>(ChatController)),
+            ...(fetchMiddlewares<RequestHandler>(ChatController.prototype.addMsg)),
+
+            function ChatController_addMsg(request: any, response: any, next: any) {
+            const args = {
+                    chatRoomId: {"in":"path","name":"chatRoomId","required":true,"dataType":"string"},
+                    request: {"in":"body","name":"request","ref":"IMsg"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new ChatController();
+
+
+              const promise = controller.addMsg.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/comment',
             ...(fetchMiddlewares<RequestHandler>(CommentController)),
             ...(fetchMiddlewares<RequestHandler>(CommentController.prototype.addComment)),
@@ -974,6 +1037,31 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/posts/completed/:postId',
+            ...(fetchMiddlewares<RequestHandler>(PostController)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.completed)),
+
+            function PostController_completed(request: any, response: any, next: any) {
+            const args = {
+                    postId: {"in":"path","name":"postId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PostController();
+
+
+              const promise = controller.completed.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/posts/reserved/post/:id',
             ...(fetchMiddlewares<RequestHandler>(PostController)),
             ...(fetchMiddlewares<RequestHandler>(PostController.prototype.getReservedPost)),
@@ -993,6 +1081,31 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getReservedPost.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/posts/completed/post/:id',
+            ...(fetchMiddlewares<RequestHandler>(PostController)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.getCompletedPost)),
+
+            function PostController_getCompletedPost(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PostController();
+
+
+              const promise = controller.getCompletedPost.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

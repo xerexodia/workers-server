@@ -22,7 +22,7 @@ import { WorkersServices } from '../../Services/workerServices';
 import { IPost } from '../../Models/post';
 import { PostServices } from '../../Services/postServices';
 import { IResPost } from '../../Models/reservedPost';
-
+import * as Hi from '../../Models/post';
 // post controller
 @Route('/posts')
 export class PostController extends Controller {
@@ -121,9 +121,19 @@ export class PostController extends Controller {
     const resPost = await new PostServices().reservePost(postId, workerId);
     return resPost!;
   }
+  //completed post
+  @SuccessResponse('201', 'deleted successfully') // Custom success response
+  @Patch('/completed/{postId}')
+  public async completed(@Path() postId: string): Promise<any> {
+    return await new PostServices().completedPost(postId);
+  }
 
   @Get('reserved/post/{id}')
   public async getReservedPost(@Path() id: string): Promise<IResPost[]> {
     return await new PostServices().getReservedPost(id);
+  }
+  @Get('completed/post/{id}')
+  public async getCompletedPost(@Path() id: string): Promise<IResPost[]> {
+    return await new PostServices().getCompletedPost(id);
   }
 }

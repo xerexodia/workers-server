@@ -137,6 +137,18 @@
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
+			"IMsg": {
+				"properties": {
+					"content": {
+						"type": "string"
+					},
+					"from": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IComment": {
 				"properties": {
 					"creatorId": {
@@ -749,6 +761,82 @@
 				}
 			}
 		},
+		"/chat/{firstUser}/{secondUser}": {
+			"post": {
+				"operationId": "AddComment",
+				"responses": {
+					"201": {
+						"description": "created successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"chat"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "firstUser",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "secondUser",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/chat/msg/{chatRoomId}": {
+			"post": {
+				"operationId": "AddMsg",
+				"responses": {
+					"201": {
+						"description": "created successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"chat"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "chatRoomId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IMsg"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/comment": {
 			"post": {
 				"operationId": "AddComment",
@@ -1304,9 +1392,66 @@
 				]
 			}
 		},
+		"/posts/completed/{postId}": {
+			"patch": {
+				"operationId": "Completed",
+				"responses": {
+					"201": {
+						"description": "deleted successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/posts/reserved/post/{id}": {
 			"get": {
 				"operationId": "GetReservedPost",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IResPost"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/posts/completed/post/{id}": {
+			"get": {
+				"operationId": "GetCompletedPost",
 				"responses": {
 					"200": {
 						"description": "Ok",
